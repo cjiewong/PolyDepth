@@ -1,5 +1,6 @@
 {
   "name": "poly-depth",
+  "description": "PolyDepth is a real-time analytics bot for Polymarket crypto Up/Down markets, combining order book data, Binance trades, and price anchors to detect short-term market inefficiencies.",
   "packageManager": "yarn@4.12.0",
   "scripts": {
     "ci": "yarn install --immutable",
