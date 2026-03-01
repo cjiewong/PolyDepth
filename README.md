@@ -49,6 +49,28 @@ Calculated indicators:
 - RSI (configurable period)
 - Recent trade activity window
 
+#### Price to Beat Logic and limition
+
+The "Price to Beat" is intended to represent the underlying reference price at the start of each market interval.
+
+Ideally, this value would be retrieved from a historical Chainlink price API at the exact event start timestamp. However, Chainlink does not provide a simple public API for querying historical price data at arbitrary timestamps.
+
+To work around this limitation, PolyDepth uses the following approach:
+
+- At the end of each event interval, the final observed Chainlink price is stored.
+- This stored value is then used as the **"Price to Beat"** for the next event interval.
+- This creates a rolling reference price mechanism between consecutive markets.
+
+For the very first event after the application starts:
+
+- There is no previously recorded end price.
+- Therefore, no "Price to Beat" value is available.
+- Any derived metrics that depend on the "Price to Beat" will be undefined for that initial event.
+
+Once the first event completes, subsequent events will have a valid reference price.
+
+This approach ensures consistent price anchoring across intervals without requiring historical oracle queries.
+
 ---
 
 ### 3️⃣ Chainlink Price Anchor (Polymarket RTDS)
@@ -191,6 +213,26 @@ PolyDepth 连接以下数据源：
 - 事件结束价格记录
 
 ---
+
+#### Price to Beat 逻辑与限制说明
+
+“Price to Beat” 用于表示每个市场周期开始时的底层参考价格。
+
+理想情况下，这个值应当通过查询 Chainlink 在事件开始时间点的历史价格获得。然而，目前 Chainlink 并未提供一个简单的公开 API 来按任意时间戳查询历史价格数据。
+
+为了解决这一限制，PolyDepth 采用了以下方法：
+• 在每个市场周期结束时，记录当时最后观测到的 Chainlink 价格；
+• 将该价格作为下一周期的 “Price to Beat”；
+• 通过这种方式，在相邻市场之间形成一个滚动的参考价格机制。
+
+对于应用程序启动后的第一个市场周期：
+• 由于此前没有记录过结束价格；
+• 因此不会存在可用的 “Price to Beat”；
+• 所有依赖 “Price to Beat” 计算的衍生指标，在该首个周期内都会是未定义状态。
+
+当第一个周期结束后，后续周期将拥有有效的参考价格。
+
+这种方法可以在无需查询历史预言机数据的前提下，实现市场周期之间的一致价格锚定。
 
 ### 4️⃣ 快照记录系统
 
