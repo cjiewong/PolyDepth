@@ -10,7 +10,7 @@ export class OrderPanel extends BaseComponent {
 
   constructor(screen: blessed.Widgets.Screen) {
     const container = blessed.box({
-      top: 7,
+      top: 9,
       width: "100%",
       height: 16,
     });

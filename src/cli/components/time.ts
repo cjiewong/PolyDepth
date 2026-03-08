@@ -6,7 +6,7 @@ import { BaseComponent } from "./base";
 export class TimePanel extends BaseComponent {
   constructor(screen: blessed.Widgets.Screen) {
     const container = blessed.box({
-      top: 4,
+      top: 6,
       height: 3,
       width: "100%",
       border: "line",

@@ -21,12 +21,15 @@ class MyOrderbookSummary {
   constructor(raw: OrderBookSummary) {
     this.raw = raw;
 
+    const asks = Array.isArray(raw?.asks) ? raw.asks : [];
+    const bids = Array.isArray(raw?.bids) ? raw.bids : [];
+
     // guarantee the price result (although the original price levels are sorted)
-    if (raw.asks.length > 0) {
-      this.ask = Math.min(...raw.asks.map((l) => Number(l.price)));
+    if (asks.length > 0) {
+      this.ask = Math.min(...asks.map((l) => Number(l.price)));
     }
-    if (raw.bids.length > 0) {
-      this.bid = Math.max(...raw.bids.map((l) => Number(l.price)));
+    if (bids.length > 0) {
+      this.bid = Math.max(...bids.map((l) => Number(l.price)));
     }
 
     if (isValidNumber(this.ask) && isValidNumber(this.bid)) {
@@ -38,13 +41,13 @@ class MyOrderbookSummary {
       this.spread = 0;
     }
 
-    const totalBidVol = raw.bids.reduce((a, l) => a + Number(l.size), 0);
-    const totalAskVol = raw.asks.reduce((a, l) => a + Number(l.size), 0);
+    const totalBidVol = bids.reduce((a, l) => a + Number(l.size), 0);
+    const totalAskVol = asks.reduce((a, l) => a + Number(l.size), 0);
     const totalVol = totalAskVol + totalBidVol;
     this.imbalance = totalVol === 0 ? 0 : (totalBidVol - totalAskVol) / totalVol;
 
-    this.top5bidVWAP = this.calculateVWAP(raw.bids, 5);
-    this.top5askVWAP = this.calculateVWAP(raw.asks, 5);
+    this.top5bidVWAP = this.calculateVWAP(bids, 5);
+    this.top5askVWAP = this.calculateVWAP(asks, 5);
 
     if (isValidNumber(this.ask) && isValidNumber(this.bid)) {
       this.microPrices =

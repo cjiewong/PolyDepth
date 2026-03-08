@@ -10,7 +10,7 @@ export class MarketPanel extends BaseComponent {
 
   constructor(screen: blessed.Widgets.Screen) {
     const container = blessed.box({
-      top: 24,
+      top: 26,
       width: "100%",
       height: 8,
     });

@@ -1,5 +1,6 @@
 import WebSocket from "ws";
 import { LogMethod } from "../cli";
+import { getWebSocketOptions } from "../lib/network";
 import { getChainLinkSymbol } from "../lib/symbol";
 import AppSettings from "../settings";
 
@@ -24,7 +25,7 @@ class PolyRtds {
       } catch {}
     }
 
-    this.ws = new WebSocket(AppSettings.rdtsHost);
+    this.ws = new WebSocket(AppSettings.rdtsHost, getWebSocketOptions());
 
     const symbol = getChainLinkSymbol();
     if (!symbol) return;

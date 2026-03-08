@@ -1,4 +1,7 @@
 const AppSettings = {
+  // local proxy settings
+  httpProxy: "http://127.0.0.1:7890",
+
   // Poly settings
   siteHost: "https://polymarket.com",
   clobHost: "https://clob.polymarket.com",
@@ -13,6 +16,9 @@ const AppSettings = {
 
   // other settings
   poll: 100,
+  renderInterval: 1000,
+  clobRetryCount: 3,
+  clobRetryDelay: 250,
 
   // snapshot record
   recordSnapshots: false,

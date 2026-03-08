@@ -1,4 +1,6 @@
 import { poll } from "../lib/poll";
+import { fetchWithProxy } from "../lib/network";
+import logger from "../lib/logger";
 import AppSettings from "../settings";
 import { GammaEvent } from "./types";
 import { buildSlug, currentEventStartTime, extractUpDownTokenIds } from "./utils";
@@ -24,8 +26,10 @@ class PolyEvent {
         this.startTime = startTime;
 
         const url = new URL(`${AppSettings.apiHost}/events/slug/${this.slug}`);
+        logger.log(`[EVENT] fetching ${url.toString()}`);
 
-        const res = await fetch(url.toString());
+        const res = await fetchWithProxy(url.toString());
+        logger.log(`[EVENT] response ${res.status} for slug ${this.slug}`);
 
         if (res.ok) {
           const data = (await res.json()) as GammaEvent;
@@ -37,14 +41,18 @@ class PolyEvent {
             const tokens = await extractUpDownTokenIds(data);
 
             if (tokens?.up && tokens?.dn) {
+              logger.log(`[EVENT] ready slug=${this.slug} up=${tokens.up} dn=${tokens.dn}`);
               this.upToken = tokens.up;
               this.dnToken = tokens.dn;
               break;
             }
           }
         }
-      } catch {
-        // ignore error, keep retrying
+      } catch (error) {
+        logger.log(
+          `[EVENT] fetch failed for slug ${this.slug}: ${error instanceof Error ? error.message : String(error)}`,
+          "error",
+        );
       }
 
       await poll();

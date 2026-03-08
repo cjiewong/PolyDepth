@@ -1,5 +1,6 @@
 import WebSocket from "ws";
 import { LogMethod } from "../cli";
+import { getWebSocketOptions } from "../lib/network";
 import { getBinanceSymbol } from "../lib/symbol";
 import AppSettings from "../settings";
 
@@ -30,7 +31,7 @@ class BinanceRtds {
       } catch {}
     }
 
-    this.ws = new WebSocket(url);
+    this.ws = new WebSocket(url, getWebSocketOptions());
 
     this.ws.on("open", () => {
       this.reconnectAttempts = 0;

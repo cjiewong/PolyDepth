@@ -3,6 +3,16 @@ import PolyEvent from "../poly-event";
 
 export type LogLevel = "info" | "warn" | "error";
 
+export type ServiceStatus = "idle" | "connecting" | "connected" | "degraded" | "error";
+
+export interface ConnectionStatus {
+  proxy?: string;
+  event?: ServiceStatus;
+  clob?: ServiceStatus;
+  binance?: ServiceStatus;
+  rdts?: ServiceStatus;
+}
+
 export interface LogEntry {
   message: string;
   level: LogLevel;
@@ -11,6 +21,7 @@ export interface LogEntry {
 
 export interface AppState {
   event?: PolyEvent;
+  connection?: ConnectionStatus;
 
   upOrderBook?: MyOrderbookSummary;
   dnOrderBook?: MyOrderbookSummary;

@@ -1,4 +1,5 @@
 import blessed from "blessed";
+import logger from "../lib/logger";
 import { AppState, LogLevel } from "./app-state";
 import { BaseComponent } from "./components/base";
 import { Header } from "./components/header";
@@ -52,6 +53,7 @@ class CliApp {
     const newLogs = [...(this.state.logs ?? []), entry];
 
     this.state.logs = newLogs.slice(-10);
+    logger.log(message, level);
   }
 }
 

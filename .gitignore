@@ -19,6 +19,7 @@ node_modules
 dist
 release
 polydepth-snapshots
+logs
 .codex
 .claude
 .idea
